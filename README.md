@@ -5,6 +5,43 @@ The protocol layer behind [sitepassport.org](https://sitepassport.org)'s live, c
 **Live endpoint:** `https://sitepassport.org/.well-known/mcp.json`
 Fully public, no auth, no API key. `GET` returns a human/crawler-readable manifest; `POST` speaks JSON-RPC 2.0 (`initialize`, `tools/list`, `tools/call`) over a single stateless request — no session required.
 
+## Connect it
+
+No API key, no signup, nothing to configure — that's the whole pitch.
+
+**Claude Code:**
+
+```bash
+claude mcp add --transport http sitepassport https://sitepassport.org/.well-known/mcp.json
+```
+
+**Cursor** (`~/.cursor/mcp.json` or a project's `.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "sitepassport": {
+      "url": "https://sitepassport.org/.well-known/mcp.json"
+    }
+  }
+}
+```
+
+**VS Code** (`.vscode/mcp.json`):
+
+```json
+{
+  "servers": {
+    "sitepassport": {
+      "type": "http",
+      "url": "https://sitepassport.org/.well-known/mcp.json"
+    }
+  }
+}
+```
+
+**Any other client** that supports a remote Streamable HTTP MCP server: point it at the URL above — no headers, no credentials.
+
 ## What's in this repo, and what isn't
 
 This repo contains the **protocol adapter** — JSON-RPC request/response handling and the tool schema — the same shape used by other hosted-API MCP servers you may already be pointing agents at (Stripe's [`agent-toolkit`](https://github.com/stripe/agent-toolkit), Perplexity's [`modelcontextprotocol`](https://github.com/ppl-ai/modelcontextprotocol), Sentry's [`sentry-mcp`](https://github.com/getsentry/sentry-mcp)): the public repo is the adapter, not the proprietary engine behind it.
