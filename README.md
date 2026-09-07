@@ -48,6 +48,10 @@ curl -s https://sitepassport.org/.well-known/mcp.json \
 
 A listed site's score is pulled directly from that site's own public manifest, on a recurring schedule — not typed into a form once and trusted forever. See [`METHODOLOGY.md`](./METHODOLOGY.md) for the full rationale and [sitepassport.org](https://sitepassport.org) for the live directory.
 
+## Support
+
+Questions, issues with the live endpoint, or methodology feedback: [hello@agentic-tech.us](mailto:hello@agentic-tech.us).
+
 ## License
 
 MIT — see [`LICENSE`](./LICENSE).
