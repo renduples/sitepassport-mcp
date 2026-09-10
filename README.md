@@ -53,6 +53,20 @@ What you get from this repo:
 - The tool schema for `check_wordpress_agent_readiness`, verbatim.
 - [`METHODOLOGY.md`](./METHODOLOGY.md) — every check Site Passport runs, its category, and its weight, kept in sync with [sitepassport.org/methodology](https://sitepassport.org/methodology). This is the actual audit surface: what's checked and why, versioned and public, even though the check *implementation* isn't.
 
+## Docker
+
+This repo also ships a `Dockerfile` for registry checkers (e.g. Glama) that need to start the server in a container and confirm it answers MCP introspection — it is not how you'd actually use Site Passport day to day; use the live HTTP endpoint above for that.
+
+```bash
+docker build -t sitepassport-mcp .
+printf '%s\n%s\n' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
+  '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
+  | docker run -i --rm sitepassport-mcp
+```
+
+It speaks stdio, newline-delimited JSON-RPC, and answers `initialize` / `tools/list` with the real tool schema. `tools/call` isn't implemented in the container — it needs the private scoring engine described above — and returns a pointer back to the live endpoint instead.
+
 ## The one tool
 
 **`check_wordpress_agent_readiness`** — checks whether a WordPress site (or any website) is ready to be safely operated by AI agents: `llms.txt`, AI-crawler directives in `robots.txt`, schema.org markup, and a WebMCP capability manifest. Live-checked against the site itself, never self-reported.
